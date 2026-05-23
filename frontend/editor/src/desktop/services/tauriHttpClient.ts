@@ -256,7 +256,9 @@ class TauriHttpClient {
         };
       }
 
-      const response = await fetch(url, fetchOptions);
+      const isLocalhost = url.includes('localhost') || url.includes('127.0.0.1');
+      const fetchFn = isLocalhost ? window.fetch.bind(window) : fetch;
+      const response = await fetchFn(url, fetchOptions);
 
       // Convert Headers to plain object
       const responseHeaders: Record<string, string> = {};
